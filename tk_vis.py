@@ -2,7 +2,7 @@ import tkinter as tk
 import threading
 
 from tkinter import messagebox
-from main import solve_sudoku, is_valid
+from main import solve_sudoku
 
 root = tk.Tk()
 root.title("Sudoku solver")
@@ -10,13 +10,12 @@ root.title("Sudoku solver")
 
 def solve_sudoku_thread(board):
     board = solve_sudoku(board=board)
-    root.after(0, update_interface, solved_board)
 
 
 def check_board(board):
     # checking row
-    values = []
     for row in board:
+        values = []
         for num in row:
             if num != 0:
                 if num in values:
@@ -24,10 +23,10 @@ def check_board(board):
             values.append(num)
 
     # checking column
-    values = []
     for col in range(9):
+        values = []
         for row in board:
-            num = row[i]
+            num = row[col]
             if num != 0:
                 if num in values:
                     return False
@@ -50,9 +49,9 @@ def check_board(board):
 
 def solve():
     board = []
-    for row in entries:
+    for i, row in enumerate(entries):
         board_row = []
-        for entry in row:
+        for j, entry in enumerate(row):
             val = entry.get()
             if val.isdigit() and 1 <= int(val) <= 9:
                 board_row.append(int(val))
@@ -60,7 +59,8 @@ def solve():
                 board_row.append(0)
             else:
                 messagebox.showerror(
-                    "Input Error", "You can only enter numbers from 1 to 9."
+                    "Input Error",
+                    f"You can only enter numbers from 1 to 9. (at row: {i+1} and column: {j+1})",
                 )
                 return
         board.append(board_row)
