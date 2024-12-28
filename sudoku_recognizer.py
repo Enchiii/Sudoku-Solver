@@ -1,14 +1,14 @@
 import cv2
 import numpy as np
-from mpmath.identification import transforms
+import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, TensorDataset
 from model import Net
 import operator
 import torch
+from tk_vis import TkSudoku
 
 
 def prepare_imgages(images):
-    classes = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '#')
     data = images
     data = np.expand_dims(data, axis=1)
 
@@ -19,10 +19,10 @@ def prepare_imgages(images):
 
     # Apply transform to dataset
     data = torch.stack([transform(img) for img in data])  # Convert each image
-    labels = torch.tensor(classes, dtype=torch.long)
-    dataset = TensorDataset(images, )
+    labels = torch.tensor([0 for _ in range(len(images))], dtype=torch.long)
+    dataset = TensorDataset(data, labels)
 
-    return DataLoader(dataset, batch_size=1, shuffle=False, num_workers=2)[0]
+    return DataLoader(dataset, batch_size=1, shuffle=False, num_workers=2)
 
 
 image = cv2.imread(r"images/sudoku1.png")
@@ -107,10 +107,25 @@ for y in range(9):
 PATH = './models/m1.pth'
 net = Net()
 net.load_state_dict(torch.load(PATH, weights_only=True))
-net(prepare_imgages(images))
 
-out = image
-cv2.imshow(f"{x} {y}", out)
+if __name__ == '__main__':
+    classes = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '#')
+    preds = []
+    dLoader = prepare_imgages(images)
+    with torch.no_grad():
+        for i, _data in enumerate(dLoader, 0):
+            inputs, _ = _data
+            outputs = net(inputs)
+            _, predicted = torch.max(outputs, 1)
+            preds.append(predicted)
 
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    board = []
+    for y in range(9):
+        row = []
+        for x in range(9):
+            row.append(classes[preds[y * 9 + x]])
+        board.append(row)
+
+    tk = TkSudoku()
+    tk.generate_board(board)
+    tk.main_loop()
