@@ -1,0 +1,41 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.sudoku-grid {
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+  gap: 5px;
+  margin: 20px auto;
+  width: fit-content;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #ddd inset;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.result {
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+}
