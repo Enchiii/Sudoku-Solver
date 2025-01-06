@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Sudoku-Solver" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Sudoku-Solver" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="ml" project-jdk-type="Python SDK" />
 </project>

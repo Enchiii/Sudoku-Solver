@@ -1,49 +1,146 @@
 body{
+  background-color: #111111;
   display: flex;
-  align-items: center;
   justify-content: center;
+  height: 100vh;
+  margin: 0;
 }
 
 .App {
+  margin-top: 5rem;
   text-align: center;
   font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+h1 {
+  text-align: center;
+  color: #fff;
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #ff00ff, 0 0 2rem #ff00ff, 0 0 4rem #ff00ff;
 }
 
 .sudoku-grid {
   display: grid;
   grid-template-rows: repeat(9, 1fr);
-  gap: 5px;
-  margin: 20px auto;
+  gap: 0.5rem;
+  margin: 2rem auto;
   width: fit-content;
 }
 
 .row {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 5px;
+  gap: 0.5rem;
 }
 
 .cell {
-  width: 40px;
-  height: 40px;
+  width: 2.7rem;
+  height: 2.7rem;
   text-align: center;
-  font-size: 18px;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 5px #ddd inset;
+  font-size: 1.5rem;
+  border: 0.1rem solid #fff;
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #0000ff, 0 0 2rem #0000ff, 0 0 4rem #0000ff;
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 0.8rem #0000ff, inset 0 0 0.8rem #0000ff;
+  transition: all 0.2s ease-in-out;
+}
+
+.cell:focus{
+  transform: scale(1.07);
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #ff00ff, inset 0 0 1.4rem #ff00ff;
+}
+
+.cell:hover{
+  transform: scale(1.07);
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #ff00ff, inset 0 0 1.4rem #ff00ff;
 }
 
 button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+  margin-top: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.3rem;
+  color: #fff;
+  border: 0.1rem solid #fff;
+  border-radius: 0.2rem;
 }
 
-.result {
-  margin-top: 20px;
+button:hover{
+  transform: scale(1.1);
+  border: 0.1rem solid #fff;
+}
+
+.pink-neon{
+  border-radius: 0.2rem;
+  border: 0.1rem solid #fff;
+  padding: 0.5rem 1rem;
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #ff00ff, 0 0 2rem #ff00ff, 0 0 4rem #ff00ff;
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 0.8rem #ff00ff, inset 0 0 0.8rem #ff00ff;
+  transition: all 0.2s ease-in-out;
+}
+
+.pink-neon:hover{
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #ff00ff, inset 0 0 1.4rem #ff00ff;
+}
+
+.green-neon{
+  border-radius: 0.2rem;
+  border: 0.1rem solid #fff;
+  padding: 0.5rem 1rem;
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #00ff00, 0 0 2rem #00ff00, 0 0 4rem #00ff00;
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 0.8rem #00ff00, inset 0 0 0.8rem #00ff00;
+  transition: all 0.2s ease-in-out;
+}
+
+.green-neon:hover{
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #00ff00, inset 0 0 1.4rem #00ff00;
+}
+
+.yellow-neon{
+  border-radius: 0.2rem;
+  border: 0.1rem solid #fff;
+  padding: 0.5rem 1rem;
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #ffff00, 0 0 2rem #ffff00, 0 0 4rem #ffff00;
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 0.8rem #ffff00, inset 0 0 0.8rem #ffff00;
+  transition: all 0.2s ease-in-out;
+}
+
+.yellow-neon:hover{
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #ffff00, inset 0 0 1.4rem #ffff00;
+}
+
+.blue-neon{
+  border-radius: 0.2rem;
+  border: 0.1rem solid #fff;
+  padding: 0.5rem 1rem;
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #0000ff, 0 0 2rem #0000ff, 0 0 4rem #0000ff;
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 0.8rem #0000ff, inset 0 0 0.8rem #0000ff;
+  transition: all 0.2s ease-in-out;
+}
+
+.blue-neon:hover{
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #0000ff, inset 0 0 1.4rem #0000ff;
+}
+
+.red-neon{
+  border-radius: 0.2rem;
+  border: 0.1rem solid #fff;
+  padding: 0.5rem 1rem;
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #ff0000, 0 0 2rem #ff0000, 0 0 4rem #ff0000;
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 0.8rem #ff0000, inset 0 0 0.8rem #ff0000;
+  transition: all 0.2s ease-in-out;
+}
+
+.red-neon:hover{
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #ff0000, inset 0 0 1.4rem #ff0000;
 }
 
 .error {
-  color: red;
+  margin-top: 2rem;
+  font-size: 1rem;
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  color: #ff0000;
+  text-shadow: 0 0 2rem #ff0000, 0 0 4rem #ff0000;
 }
 
 .controls{

@@ -96,17 +96,20 @@ function App() {
   };
 
   return (
-      <div className="App">
+      <>
         <h1>Sudoku Solver</h1>
+        <div className="App">
 
-        <Grid grid={grid} onCellChange={handleChange}/>
-        <div className="controls">
-          <button onClick={handleSolve}>Solve Sudoku</button>
-          <button onClick={handleClearGrid}>Clear Grid</button>
-          <button onClick={handleLoadPuzzle}>Load Puzzle</button>
+          <Grid grid={grid} onCellChange={handleChange}/>
+          <div className="controls">
+            <button className={"pink-neon"} onClick={handleSolve}>Solve Sudoku</button>
+            <button className={"green-neon"} onClick={handleClearGrid}>Clear Grid</button>
+            <button className={"yellow-neon"} onClick={handleLoadPuzzle}>Load Puzzle</button>
+          </div>
+          {error && <p className={"error red-neon"}>Error: {error}</p>}
         </div>
-        {error && <p className="error">Error: {error}</p>}
-      </div>
+      </>
+
   );
 }
 

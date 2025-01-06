@@ -108,7 +108,7 @@ if __name__ == '__main__':
 
     print('Finished Training')
 
-    PATH = './models/m1.pth'
+    PATH = 'models/m1.pth'
     torch.save(net.state_dict(), PATH)
 
     dataiter = iter(testloader)

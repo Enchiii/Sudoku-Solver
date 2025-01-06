@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, TensorDataset
-from model import Net
+from backend.model import Net
 import operator
 import torch
 from tk_vis import TkSudoku
@@ -104,7 +104,7 @@ for y in range(9):
         pixel_sum = np.sum(img)
         pixels_sum = [pixel_sum]
 
-PATH = './models/m1.pth'
+PATH = 'models/m1.pth'
 net = Net()
 net.load_state_dict(torch.load(PATH, weights_only=True))
 
