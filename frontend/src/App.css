@@ -7,7 +7,7 @@ body{
 }
 
 .App {
-  margin-top: 5rem;
+  margin-top: 4rem;
   text-align: center;
   font-family: Arial, sans-serif;
   color: #fff;
@@ -23,7 +23,7 @@ h1 {
   display: grid;
   grid-template-rows: repeat(9, 1fr);
   gap: 0.5rem;
-  margin: 2rem auto;
+  margin: 1rem auto;
   width: fit-content;
 }
 
@@ -52,6 +52,11 @@ h1 {
 .cell:hover{
   transform: scale(1.07);
   box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 1.4rem #ff00ff, inset 0 0 1.4rem #ff00ff;
+}
+
+.highlight {
+  text-shadow: -0.1rem -0.1rem 1rem #fff, 0 0 0.5rem #ff0000, 0 0 2rem #ff0000, 0 0 4rem #ff0000;
+  box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 0.8rem #ff0000, inset 0 0 0.8rem #ff0000;
 }
 
 button {

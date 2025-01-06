@@ -28,6 +28,8 @@ async def solve(board: SudokuInput):
 
     board = [[int(x) if x else 0 for x in row] for row in board]
 
+    # TODO: check board and load sudoku from image
+
     solved_board = solve_sudoku(board)
 
     if solved_board is False:
