@@ -2,7 +2,7 @@ import tkinter as tk
 import threading
 
 from tkinter import messagebox
-from backend.sudoku_solver import solve_sudoku
+from sudoku_solver import solve_sudoku
 
 
 class TkSudoku:
