@@ -13,6 +13,7 @@
 .idea/**/shelf
 
 backend/dataset/
+backend/__pycache__
 .idea/
 
 # AWS User-specific
