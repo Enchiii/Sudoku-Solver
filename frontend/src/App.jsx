@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Grid from "./components/Grid.jsx";
 import Popup from "./components/Popup.jsx";
 import { getCookie, setCookie } from "./utils/cookiesUtils.jsx";
