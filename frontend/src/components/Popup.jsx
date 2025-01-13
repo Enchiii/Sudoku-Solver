@@ -35,7 +35,7 @@ const Popup = ({ onClose, games, onLoadGame, onFileUpload }) => {
                     className={getRandomClassName()}
                     onClick={() => onLoadGame(game.board)}
                 >
-                  Game {index}
+                  Game {index+1}
                 </button>
             ))}
         </footer>

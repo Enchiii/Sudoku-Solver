@@ -3,25 +3,40 @@ import operator
 import numpy as np
 import torch
 import torchvision.transforms as transforms
-from PIL import Image
-from matplotlib import pyplot as plt
 from torch.utils.data import DataLoader, TensorDataset
-from model import Net, InvertColors, RemoveAlphaChannel
-from tk_vis import TkSudoku
 
 
 def prepare_images(images):
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize((28, 28)),
+        transforms.Normalize((0.1307,), (0.3081,)),
     ])
 
-    data = torch.stack([transform(img) for img in images])
+    images = torch.stack([transform(img) for img in images])
+    return images
 
-    labels = torch.zeros(len(images), dtype=torch.long)
 
-    dataset = TensorDataset(data, labels)
-    return DataLoader(dataset, batch_size=1, shuffle=False, num_workers=2)
+def is_cell_empty_by_variance(image, threshold=50):
+    variance = np.var(image)
+    return variance < threshold
+
+
+def is_cell_empty_by_contours(image):
+    contours, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    return len(contours) == 0
+
+
+def is_cell_empty_by_moments(image):
+    moments = cv2.moments(image)
+    return moments['m00'] == 0
+
+
+def is_cell_empty(image, threshold=50):
+    result_variance = is_cell_empty_by_variance(image, threshold=threshold)
+    result_contours = is_cell_empty_by_contours(image)
+    result_moments = is_cell_empty_by_moments(image)
+    return sum([result_variance, result_contours, result_moments]) >= 2
 
 
 def sudoku_recognizer(image):
@@ -36,9 +51,6 @@ def sudoku_recognizer(image):
     margin = 10
     case = 28 + 2 * margin
     perspective_size = 9 * case
-
-    flag = 0
-    ans = 0
 
     # Find the largest contour(Sudoku Grid)
     for c in contours_:
@@ -85,7 +97,6 @@ def sudoku_recognizer(image):
 
     images = []
     for y in range(9):
-        predicted_line = []
         for x in range(9):
             y2min = y * case + margin
             y2max = (y + 1) * case - margin
@@ -97,38 +108,35 @@ def sudoku_recognizer(image):
             img = cv2.resize(image, (28, 28))
             images.append(img)
 
-            pixel_sum = np.sum(img)
-            pixels_sum = [pixel_sum]
-
     return images
 
-
-PATH = 'models/m1.pth'
-net = Net()
-net.load_state_dict(torch.load(PATH, weights_only=True))
-
-if __name__ == '__main__':
-    image = cv2.imread("../test_images/sudoku1.png")
-    images = sudoku_recognizer(image)
-    classes = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '#')
-    preds = []
-    dLoader = prepare_images(images)
-    with torch.no_grad():
-        for i, _data in enumerate(dLoader, 0):
-            inputs, _ = _data
-            outputs = net(inputs)
-            # print(i, " ", outputs)
-            _, predicted = torch.max(outputs, 1)
-            preds.append(predicted)
-
-
-    board = []
-    for y in range(9):
-        row = []
-        for x in range(9):
-            row.append(classes[preds[y * 9 + x]])
-        board.append(row)
-
-    tk = TkSudoku()
-    tk.generate_board(board)
-    tk.main_loop()
+#
+# PATH = 'models/m1.pth'
+# net = Net()
+# net.load_state_dict(torch.load(PATH, weights_only=True))
+#
+# if __name__ == '__main__':
+#     image = cv2.imread("../test_images/sudoku1.png")
+#     images = sudoku_recognizer(image)
+#     classes = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '#')
+#     preds = []
+#     dLoader = prepare_images(images)
+#     with torch.no_grad():
+#         for i, _data in enumerate(dLoader, 0):
+#             inputs, _ = _data
+#             outputs = net(inputs)
+#             # print(i, " ", outputs)
+#             _, predicted = torch.max(outputs, 1)
+#             preds.append(predicted)
+#
+#
+#     board = []
+#     for y in range(9):
+#         row = []
+#         for x in range(9):
+#             row.append(classes[preds[y * 9 + x]])
+#         board.append(row)
+#
+#     tk = TkSudoku()
+#     tk.generate_board(board)
+#     tk.main_loop()

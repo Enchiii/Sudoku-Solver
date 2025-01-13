@@ -1,14 +1,12 @@
 import cv2
 import torch
-import torch.nn.functional as F
 import numpy as np
-from torch import nn
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, conlist
 from sudoku_solver import solve_sudoku
 from model import Net
-from sudoku_recognizer import prepare_images, sudoku_recognizer
+from sudoku_recognizer import prepare_images, sudoku_recognizer, is_cell_empty
 from schema.schemas import list_serial
 from db_config.database import collection
 
@@ -50,24 +48,26 @@ async def solve(board: SudokuInput):
 
 @app.post("/board/upload-image")
 async def upload_image(file: UploadFile = File(...)):
-    path = "./models/m1.pth"
+    path = "./models/m3.pth"
     recognizer = Net()
-    recognizer.load_state_dict(torch.load(path, weights_only=True))
+    recognizer.load_state_dict(torch.load(path, weights_only=True, map_location=torch.device('cpu')))
 
     contents = await file.read()
     np_arr = np.frombuffer(contents, np.uint8)
     sudoku_image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
     sudoku_cells = sudoku_recognizer(sudoku_image)
-
     classes = ('', '1', '2', '3', '4', '5', '6', '7', '8', '9')
     preds = []
-    dLoader = prepare_images(sudoku_cells)
-    with torch.no_grad():
-        for data, _ in dLoader:
-            outputs = recognizer(data)
-            _, predicted = torch.max(outputs, 1)
-            preds.append(predicted)
+    for cell in sudoku_cells:
+        if is_cell_empty(cell, threshold=50):
+            preds.append(0)
+        else:
+            with torch.no_grad():
+                cell = prepare_images([cell])
+                outputs = recognizer(cell)
+                pred = torch.argmax(outputs)
+                preds.append(pred.item())
 
     board = []
     for y in range(9):
