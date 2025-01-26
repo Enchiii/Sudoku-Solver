@@ -44,7 +44,12 @@ def sudoku_recognizer(image):
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
     thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 9, 2)
 
-    contours_, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
+    morph = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+    result = cv2.dilate(morph, kernel, iterations=1)
+
+    # contours_, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours_, hierarchy = cv2.findContours(result, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contour = None
     maxArea = 0
 

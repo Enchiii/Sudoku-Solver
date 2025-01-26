@@ -4,8 +4,6 @@ from torch import nn
 from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets, transforms
 
-import cv2
-
 
 class Net(nn.Module):
     def __init__(self):
@@ -34,7 +32,7 @@ class Net(nn.Module):
         return x
 
 
-def train(model, device, train_loader, criterion, optimizer, epochs, path="models/m3.pth"):
+def train(model, device, train_loader, criterion, optimizer, epochs, path="models/m1.pth"):
     for epoch in range(epochs):
         model.train()
         running_loss = 0.0
@@ -85,6 +83,7 @@ def evaluate(model, device, test_loader, criterion):
         print(f"Accuracy: {accuracy}, Loss: {avg_loss}")
         return accuracy, avg_loss
 
+
 if __name__ == '__main__':
     transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.1307,), (0.3081,))])
 
@@ -96,10 +95,11 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = Net().to(device)
+    # model.load_state_dict(torch.load('models/m1.pth'))
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    epochs = 5
+    epochs = 10
 
-    train(model, device, train_loader, criterion, optimizer, epochs)
+    train(model, device, train_loader, criterion, optimizer, epochs, path="models/m2.pth")
 
     evaluate(model, device, test_loader, criterion)
