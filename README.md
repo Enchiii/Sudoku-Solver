@@ -14,3 +14,8 @@ INSTALL DEPENDENCIES AND RUN:
   pip install -r requirements.txt
   uvicorn main:app
   ```
+
+---  
+CONTRIBUTORS:
+* [@Enchiii](https://github.com/Enchiii)
+* [@OFALOFAL](https://github.com/OFALOFAL)
